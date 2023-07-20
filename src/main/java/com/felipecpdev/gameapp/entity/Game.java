@@ -22,16 +22,18 @@ public class Game {
     @Column(name = "game_name", nullable = false)
     private String gameName;
     private String developer;
+    @Column(columnDefinition="TEXT")
     private String description;
     private String engine;
     @Column(name = "game_art")
     private String gameArt;
+    private boolean active;
     @CreationTimestamp
     private LocalDateTime dateCreated;
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "game",cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameLanguage> gameLanguageSet = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
