@@ -17,6 +17,6 @@ public class Platform {
     @Column(name = "platform_name")
     private String platformName;
 
-    @OneToMany(mappedBy = "platform")
+    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PublisherPlatform> publisherPlatformSet = new HashSet<>();
 }

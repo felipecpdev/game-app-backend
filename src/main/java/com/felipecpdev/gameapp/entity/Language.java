@@ -17,6 +17,6 @@ public class Language {
     @Column(name = "language_name")
     private String languageName;
 
-    @OneToMany(mappedBy = "language")
+    @OneToMany(mappedBy = "language", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameLanguage> gameLanguageSet = new HashSet<>();
 }

@@ -31,15 +31,15 @@ public class Game {
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameLanguage> gameLanguageSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameGenre> gameGenreSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GamePublisher> gamePublisherSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameMode> gameModeSet = new HashSet<>();
 }
