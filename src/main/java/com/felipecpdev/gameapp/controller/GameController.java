@@ -20,7 +20,8 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<Game>> findAllGames() {
-        return new ResponseEntity<>(gameService.getAllGame(), HttpStatus.OK);
+        List<Game> gameList= gameService.getAllGame();
+        return new ResponseEntity<>(gameList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

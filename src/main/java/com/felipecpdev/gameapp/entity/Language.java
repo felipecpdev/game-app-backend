@@ -3,12 +3,9 @@ package com.felipecpdev.gameapp.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Data
 @Entity
-@Table(name = "language")
+@Table(name = "language_db")
 public class Language {
 
     @Id
@@ -16,7 +13,4 @@ public class Language {
     private Long id;
     @Column(name = "language_name")
     private String languageName;
-
-    @OneToMany(mappedBy = "language", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<GameLanguage> gameLanguageSet = new HashSet<>();
 }

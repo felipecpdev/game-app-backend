@@ -1,5 +1,7 @@
 package com.felipecpdev.gameapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,15 +36,17 @@ public class Game {
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
+    @JsonManagedReference(value = "game-language-mapper")
     @OneToMany(mappedBy = "game",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<GameLanguage> gameLanguageSet = new HashSet<>();
+    private List<GameLanguage> gameLanguageList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameGenre> gameGenreSet = new HashSet<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GamePublisher> gamePublisherSet = new HashSet<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GameMode> gameModeSet = new HashSet<>();
 }
