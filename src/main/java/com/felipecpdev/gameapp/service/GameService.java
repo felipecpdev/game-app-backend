@@ -1,5 +1,7 @@
 package com.felipecpdev.gameapp.service;
 
+import com.felipecpdev.gameapp.dto.GameDTO;
+import com.felipecpdev.gameapp.utils.PagedResponse;
 import com.felipecpdev.gameapp.entity.Game;
 
 import java.util.List;
@@ -15,4 +17,7 @@ public interface GameService {
     Game getGameById(long id);
 
     void deleteGame(long id);
+
+    PagedResponse<GameDTO> getGamePaginated(int pageNo, int pageSize, String sortBy, String sortDir);
+
 }

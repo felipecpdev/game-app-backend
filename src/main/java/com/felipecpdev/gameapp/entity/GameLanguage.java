@@ -1,6 +1,5 @@
 package com.felipecpdev.gameapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,12 +12,12 @@ public class GameLanguage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonBackReference(value = "game-language-mapper")
     @ManyToOne
+    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name = "fk_game_id"))
     private Game game;
 
     @ManyToOne
-    @JoinColumn(name="language_id")
+    @JoinColumn(name = "language_id", foreignKey = @ForeignKey(name = "fk_languagedb_id"))
     private Language languagedb;
 
 }
