@@ -15,10 +15,4 @@ public class Publisher {
     private Long id;
     @Column(name = "publisher_name")
     private String publisherName;
-
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<GamePublisher> gamePublisherSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PublisherPlatform> publisherPlatformSet = new HashSet<>();
 }
