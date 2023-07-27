@@ -18,6 +18,6 @@ public interface GameService {
 
     void deleteGame(long id);
 
-    PagedResponse<GameDTO> getGamePaginated(int pageNo, int pageSize, String sortBy, String sortDir);
+    PagedResponse<GameDTO> getGamePaginated(int pageNo, int pageSize, String sortBy, String sortDir, String name);
 
 }

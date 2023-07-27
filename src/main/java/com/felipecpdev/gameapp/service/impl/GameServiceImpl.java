@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -84,15 +85,20 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PagedResponse<GameDTO> getGamePaginated(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public PagedResponse<GameDTO> getGamePaginated(int pageNo, int pageSize, String sortBy, String sortDir, String name) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Game> gamePage = gameRepository.findAll(pageable);
-        List<Game> gameList = gamePage.getContent();
 
+        Page<Game> gamePage;
+        if (!Objects.equals(name, "")) {
+            gamePage = gameRepository.findByGameNameContainsIgnoreCase(name, pageable);
+        } else {
+            gamePage = gameRepository.findAll(pageable);
+        }
+        List<Game> gameList = gamePage.getContent();
         List<GameDTO> content = gameList.stream()
                 .map(game -> mapToDTO(game))
                 .collect(Collectors.toList());
