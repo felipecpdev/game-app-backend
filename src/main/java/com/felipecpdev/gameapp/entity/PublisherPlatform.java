@@ -2,6 +2,8 @@ package com.felipecpdev.gameapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -14,9 +16,11 @@ public class PublisherPlatform {
 
     @ManyToOne
     @JoinColumn(name = "platform_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Platform platform;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Publisher publisher;
 }

@@ -16,8 +16,4 @@ public class Mode {
     private Long id;
     @Column(name = "mode_name")
     private String modeName;
-
-    @OneToMany(mappedBy = "mode", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<GameMode> gameModeSet = new HashSet<>();
-
 }
