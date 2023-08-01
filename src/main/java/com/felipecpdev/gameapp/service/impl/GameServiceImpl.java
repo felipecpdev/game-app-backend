@@ -48,7 +48,7 @@ public class GameServiceImpl implements GameService {
             gameUpdate.setDescription(game.getDescription());
             gameUpdate.setEngine(game.getEngine());
             gameUpdate.setGameArt(game.getGameArt());
-            gameUpdate.setActive(gameUpdate.isActive());
+            gameUpdate.setActive(game.isActive());
             gameRepository.save(gameUpdate);
             return gameUpdate;
         } else {
