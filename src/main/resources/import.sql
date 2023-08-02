@@ -39,5 +39,5 @@ INSERT INTO game_mode (id,game_id, mode_id) VALUES (1,1,1);
 INSERT INTO game_publisher( id,game_id, publisher_id) VALUES (1,1,474);
 INSERT INTO game_language (id,game_id, language_id) VALUES (1,1,1),(2,1,2);
 INSERT INTO game_language (id,game_id, language_id) VALUES (3,2,1),(4,2,3),(5,2,4);
-INSERT INTO publisher_platform(id, platform_id, publisher_id) VALUES (1,32,474);
+INSERT INTO publisher_platform(id, platform_id, publisher_id,release_date) VALUES (1,32,474,'2023-06-22');
 

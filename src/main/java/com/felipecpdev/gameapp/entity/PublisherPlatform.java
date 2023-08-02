@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 @Entity
@@ -23,4 +26,6 @@ public class PublisherPlatform {
     @JoinColumn(name = "publisher_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Publisher publisher;
+
+    private Date releaseDate;
 }

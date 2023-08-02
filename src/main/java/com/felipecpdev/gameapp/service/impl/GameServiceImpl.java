@@ -1,12 +1,10 @@
 package com.felipecpdev.gameapp.service.impl;
 
-import com.felipecpdev.gameapp.dto.GameDTO;
+import com.felipecpdev.gameapp.dto.*;
+import com.felipecpdev.gameapp.entity.*;
+import com.felipecpdev.gameapp.repository.*;
 import com.felipecpdev.gameapp.utils.PagedResponse;
-import com.felipecpdev.gameapp.entity.Game;
-import com.felipecpdev.gameapp.entity.GameLanguage;
 import com.felipecpdev.gameapp.exception.ResourceNotFoundException;
-import com.felipecpdev.gameapp.repository.GameLanguageRepository;
-import com.felipecpdev.gameapp.repository.GameRepository;
 import com.felipecpdev.gameapp.service.GameService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -27,9 +25,20 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final GameLanguageRepository gameLanguageRepository;
 
-    public GameServiceImpl(GameRepository gameRepository, GameLanguageRepository gameLanguageRepository) {
+    private final GameGenreRepository gameGenreRepository;
+
+    private final GameModeRepository gameModeRepository;
+    private final GamePublisherRepository gamePublisherRepository;
+    private final PublisherPlaformRepository publisherPlaformRepository;
+
+    public GameServiceImpl(GameRepository gameRepository, GameLanguageRepository gameLanguageRepository,
+                           GameGenreRepository gameGenreRepository, GameModeRepository gameModeRepository, GamePublisherRepository gamePublisherRepository, PublisherPlaformRepository publisherPlaformRepository) {
         this.gameRepository = gameRepository;
         this.gameLanguageRepository = gameLanguageRepository;
+        this.gameGenreRepository = gameGenreRepository;
+        this.gameModeRepository = gameModeRepository;
+        this.gamePublisherRepository = gamePublisherRepository;
+        this.publisherPlaformRepository = publisherPlaformRepository;
     }
 
     @Override
@@ -64,10 +73,35 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game getGameById(long id) {
+    public GameDTO getGameById(long id) {
         Optional<Game> gameDb = this.gameRepository.findById(id);
+        GameDTO gameDTO;
         if (gameDb.isPresent()) {
-            return gameDb.get();
+            List<GameLanguage> gameLanguageList = this.gameLanguageRepository.findByGameId(gameDb.get().getId());
+            List<GameGenre> gameGenreList = this.gameGenreRepository.findByGameId(gameDb.get().getId());
+            List<GameMode> gameModeList = gameModeRepository.findByGameId(gameDb.get().getId());
+            List<GamePublisher> gamePublisherList = gamePublisherRepository.findByGameId(gameDb.get().getId());
+            List<Publisher> publisherList = gamePublisherList.stream().map(GamePublisher::getPublisher).toList();
+            List<PublisherPlatform> publisherPlatformList = publisherPlaformRepository.findByPublisherIn(publisherList);
+
+            List<GameLanguageDTO> gameLanguageDTOList = gameLanguageList.stream()
+                    .map(gameLanguage -> new GameLanguageDTO(gameLanguage.getId(), gameLanguage)).toList();
+            List<GameGenreDTO> gameGenreDTOList = gameGenreList.stream()
+                    .map(gameGenre -> new GameGenreDTO(gameGenre.getId(), gameGenre)).toList();
+            List<GameModeDTO> gameModeDTOList = gameModeList.stream()
+                    .map(gameMode -> new GameModeDTO(gameMode.getId(), gameMode)).toList();
+            List<GamePublisherDTO> gamePublisherDTOList = gamePublisherList.stream()
+                    .map(gamePublisher -> new GamePublisherDTO(gamePublisher.getId(), gamePublisher)).toList();
+            List<PublisherPlatformDTO> publisherPlatformDTOList = publisherPlatformList.stream()
+                    .map(PublisherPlatformDTO::new).toList();
+
+            gameDTO = new GameDTO(gameDb.get());
+            gameDTO.setGameLanguageDTOList(gameLanguageDTOList);
+            gameDTO.setGameGenreDTOList(gameGenreDTOList);
+            gameDTO.setGameModeDTOList(gameModeDTOList);
+            gameDTO.setGamePublisherDTOList(gamePublisherDTOList);
+            gameDTO.setPublisherPlatformDTOList(publisherPlatformDTOList);
+            return gameDTO;
         } else {
             throw new ResourceNotFoundException("Record not found with id : " + id);
         }
@@ -100,7 +134,7 @@ public class GameServiceImpl implements GameService {
         }
         List<Game> gameList = gamePage.getContent();
         List<GameDTO> content = gameList.stream()
-                .map(game -> mapToDTO(game))
+                .map(GameDTO::new)
                 .collect(Collectors.toList());
 
         PagedResponse<GameDTO> gameResponse = new PagedResponse<>();
@@ -113,18 +147,4 @@ public class GameServiceImpl implements GameService {
         return gameResponse;
     }
 
-    // convert Entity into DTO
-    private GameDTO mapToDTO(Game game) {
-        GameDTO gameDTO = new GameDTO();
-        gameDTO.setId(game.getId());
-        gameDTO.setGameName(game.getGameName());
-        gameDTO.setDeveloper(game.getDeveloper());
-        gameDTO.setDescription(game.getDescription());
-        gameDTO.setEngine(game.getEngine());
-        gameDTO.setGameArt(game.getGameArt());
-        gameDTO.setActive(game.isActive());
-        gameDTO.setDateCreated(game.getDateCreated());
-        gameDTO.setLastUpdated(game.getLastUpdate());
-        return gameDTO;
-    }
 }

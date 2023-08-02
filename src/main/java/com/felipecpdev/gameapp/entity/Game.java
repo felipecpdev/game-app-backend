@@ -30,5 +30,5 @@ public class Game {
     @CreationTimestamp
     private LocalDateTime dateCreated;
     @UpdateTimestamp
-    private LocalDateTime lastUpdate;
+    private LocalDateTime lastUpdated;
 }
