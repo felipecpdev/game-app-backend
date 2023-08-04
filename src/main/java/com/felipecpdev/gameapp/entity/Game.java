@@ -23,7 +23,7 @@ public class Game {
     @Column(columnDefinition = "TEXT")
     private String description;
     private String engine;
-    @Column(name = "game_art")
+    @Column(name = "game_art",columnDefinition = "TEXT")
     private String gameArt;
     @Column(columnDefinition = "boolean default false")
     private boolean active;
